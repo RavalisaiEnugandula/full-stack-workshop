@@ -4,7 +4,7 @@ const app=express()
 
 app.use(express.json())
 app.get('/',(req,res)=>{
-    res.status(200).json("Hello");
+    res.status(200).json("Ravalisai");
 })
 app.listen(port,()=>{
     console.log("Server is running in port:" +port)
