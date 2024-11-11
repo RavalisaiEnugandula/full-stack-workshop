@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router();
 const Orders = require('../models/OrdersModel')
-
 router.get('/all', async (req, res) => {
+const validate = require('../config/auth')
+router.get('/all', validate, async (req, res) => {
     try {
         const orders = await Orders.find()
         res.status(200).json(orders)
@@ -16,7 +17,6 @@ router.post('/add', async (req, res) => {
         const neworder = new Orders(req.body)
         const { uid, pid, phone, address, total } = neworder
         if (!uid || !pid || !email || !phone || !address || total) {
-            res.send(401).json({ message: "All fields required" })
             res.status(400).json({ message: "All fields required" })
         }
         //TODO : Add User & Product Validation 
@@ -32,7 +32,6 @@ router.put('/edit/:id', async (req, res) => {
         const id = req.params.id
         const existingorder = await Orders.findOne({ _id: id })
         if (!existingorder) {
-            res.send(404).json({ message: "Order not found" })
             res.status(404).json({ message: "Order not found" })
         }
         const updatedorder = await Orders.findByIdAndUpdate(id, req.body, { new: true })
@@ -47,7 +46,6 @@ router.delete('/delete/:id', async (req, res) => {
         const id = req.params.id
         const existingorder = await Orders.findOne({ _id: id })
         if (!existingorder) {
-            res.send(404).json({ message: "Order not found" })
             res.status(404).json({ message: "Order not found" })
         }
         await Orders.findByIdAndDelete(id)
@@ -59,3 +57,4 @@ router.delete('/delete/:id', async (req, res) => {
 
 
 module.exports = router
+})

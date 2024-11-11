@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const Products = require('../models/ProductsModel')
-
+const validate = require('../config/auth')
 // Method : GET  || API : localhost:3000/products/all
 router.get('/all', async (req, res) => {
     try {
@@ -13,12 +13,11 @@ router.get('/all', async (req, res) => {
 })
 
 // Method : POST  || API : localhost:3000/products/add
-router.post('/add', async (req, res) => {
+router.post('/add', validate, async (req, res) => {
     try {
         const newproduct = new Products(req.body)
         const { title, img, price } = newproduct
         if (!title || !img || !price) {
-            res.send(401).json({ message: "All fields required" })
             res.status(400).json({ message: "All fields required" })
         }
         await newproduct.save()
@@ -29,12 +28,11 @@ router.post('/add', async (req, res) => {
 })
 
 // Method : PUT  || API : localhost:3000/products/edit/_id
-router.put('/edit/:id', async (req, res) => {
+router.put('/edit/:id', validate, async (req, res) => {
     try {
         const id = req.params.id
         const existingproduct = await Products.findOne({ _id: id })
         if (!existingproduct) {
-            res.send(404).json({ message: "Product not found" })
             res.status(404).json({ message: "Product not found" })
         }
         const updatedproduct = await Products.findByIdAndUpdate(id, req.body, { new: true })
@@ -45,12 +43,11 @@ router.put('/edit/:id', async (req, res) => {
 })
 
 // Method : DELETE  || API : localhost:3000/products/delete/_id
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:id', validate, async (req, res) => {
     try {
         const id = req.params.id
         const existingproduct = await Products.findOne({ _id: id })
         if (!existingproduct) {
-            res.send(404).json({ message: "Product not found" })
             res.status(404).json({ message: "Product not found" })
         }
         await Products.findByIdAndDelete(id)
