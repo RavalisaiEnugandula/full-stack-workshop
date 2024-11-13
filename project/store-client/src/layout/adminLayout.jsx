@@ -14,6 +14,7 @@ const AdminLayout = () => {
                         <AdminTopBar />
                     </div>
                     <div className="w-full h-full min-h-[92vh] flex justify-start items-start p-3">
+
                         <Outlet />
                     </div>
                 </div>

@@ -1,6 +1,9 @@
 import { NavLink } from "react-router-dom"
-
+import { User } from 'lucide-react'
+import { useState } from "react"
 const Navbar = () => {
+
+    const [showLogin, setShowLogin] = useState(false)
     const Linksdata = [
         {
             title: 'Home',
@@ -13,7 +16,20 @@ const Navbar = () => {
         {
             title: 'Contact',
             path: '/contact'
-        }
+        },
+        // {
+        //     title: 'Orders',
+        //     path: '/orders'
+        // },
+        // {
+        //     title: 'Users',
+        //     path: '/users'
+        // },
+        // {
+        //     title: 'Settings',
+        //     path: '/settings'
+        // },
+        
     ]
     return (
         <>
@@ -30,8 +46,19 @@ const Navbar = () => {
                         ))
                         }
                     </div>
+                    <button className="h-9 w-9 flex justify-center items-center border-black rounded-full hover:border-purple-500 hover:text-purple-500 ml-4 shadow-md"onClick={() => {setShowLogin(!showLogin)}}>
+                        <User className='h-6 w-6' />
+                    </button>
                 </div>
             </div>
+            {showLogin && (
+                <div className="absolute top-0 left-0 z-50 h-screen w-screen flex justify-center items-center bg-black/40">
+                hello
+                </div>
+
+            )
+
+            }
         </>
     )
 }
